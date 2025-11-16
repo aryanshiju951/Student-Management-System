@@ -69,17 +69,19 @@ npm install
 and set `MONGO_URI` in your environment variables (`.env` file).
 
 ### 4. Run the backend
-##### i) Run using node
+#### i) Run using node
 ```bash
 cd backend
 node backend.js
 ```
 
-##### ii) Run using nodemon (auto-restart on changes)
+#### ii) Run using nodemon (auto-restart on changes)
+
 ```bash
 cd backend
-npm install -g nodemon //If not installed before
+npm install -g nodemon 
 ```
+Do this 👆, if not installed before
 ```bash
 cd backend
 nodemon backend.js
