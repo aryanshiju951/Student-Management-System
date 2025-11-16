@@ -56,7 +56,7 @@ Student-Management-System/
 ### 1. Clone the repository
 ```bash
 git clone https://github.com/aryanshiju951/Student-Management-System.git
-cd student-app
+cd Student-Management-System
 ```
 ### 2. Install dependencies
 ```bash
