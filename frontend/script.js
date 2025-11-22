@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/students";
+const API_URL = "https://student-management-system-dc7c.onrender.com/students";
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("studentForm");
