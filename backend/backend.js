@@ -10,10 +10,19 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(morgan("dev"));
 
-mongoose.connect("mongodb://localhost:27017/studentdb")
-.then(() => console.log("Connected to MongoDB successfully"))
-.catch(err => console.error("MongoDB connection error:", err));
+const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/studentdb";
 
+async function connectWithRetry() {
+  try {
+    await mongoose.connect(mongoUri);
+    console.log("Connected to MongoDB successfully");
+  } catch (err) {
+    console.error("MongoDB connection error:", err.message);
+    setTimeout(connectWithRetry, 5000); // retry after 5 seconds
+  }
+}
+
+connectWithRetry();
 
 const studentSchema = new mongoose.Schema({
   name: { type: String, required: true },
