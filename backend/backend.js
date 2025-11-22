@@ -3,12 +3,36 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import morgan from "morgan";
 import mongoose from "mongoose";
+import client from 'prom-client'
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(morgan("dev"));
+
+// Prometheus metrics setup
+client.collectDefaultMetrics();
+
+const httpRequestCounter = new client.Counter({
+  name: "http_requests_total",
+  help: "Total number of HTTP requests",
+  labelNames: ["method", "route", "status"]
+});
+
+// Middleware to count requests
+app.use((req, res, next) => {
+  const end = res.end;
+  res.end = function (...args) {
+    httpRequestCounter.inc({
+      method: req.method,
+      route: req.route?.path || req.path,
+      status: res.statusCode
+    });
+    end.apply(this, args);
+  };
+  next();
+});
 
 const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/studentdb";
 
@@ -119,7 +143,18 @@ app.delete("/students/:id", async (req, res, next) => {
   }
 });
 
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
 
+app.get("/metrics", async (req, res) => {
+  res.set("Content-Type", client.register.contentType);
+  res.end(await client.register.metrics());
+});
+
+
+
+//error handlers
 app.use((req, res, next) => {
   res.status(404).json({ error: "Route not found" });
 });
