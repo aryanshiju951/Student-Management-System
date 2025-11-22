@@ -3,6 +3,8 @@
 A simple **Student Management** application built with **Node.js, Express, MongoDB (Mongoose)** for the backend and **HTML, CSS, JavaScript** for the frontend.  
 This project demonstrates CRUD operations (Create, Read, Update, Delete) for managing student records.
 
+[Live URL](https://student-management-system-1-5jbs.onrender.com)
+
 ---
 
 ## 🚀 Features
